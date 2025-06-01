@@ -1,59 +1,19 @@
 'use client'
-import { useState } from 'react'
+import Link from 'next/link'
 
 export default function Home() {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(false)
-
-  const fetchData = async () => {
-    setLoading(true)
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/data`)
-      const json = await res.json()
-      setData(json)
-    } catch (err) {
-      console.error('Error fetching data:', err)
-    }
-    setLoading(false)
-  }
-
   return (
-    <main className="p-8 font-sans">
-      <h1 className="text-2xl font-bold mb-4">📡 Connect to GCP Backend</h1>
+    <main className="p-10 space-y-4">
+      <h1 className="text-2xl font-bold">📊 Google Sheets Viewer</h1>
+      <p className="text-gray-600">Choisissez une feuille :</p>
 
-      <button
-        onClick={fetchData}
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        {loading ? 'Loading...' : 'Fetch Data'}
-      </button>
-
-      {data && (
-        <div className="overflow-auto mt-6">
-          <table className="min-w-full border border-gray-300 text-sm">
-            <thead className="bg-gray-200">
-              <tr>
-                {data[0].map((header, index) => (
-                  <th key={index} className="px-3 py-2 border">
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.slice(1).map((row, rowIndex) => (
-                <tr key={rowIndex} className="even:bg-gray-100">
-                  {row.map((cell, cellIndex) => (
-                    <td key={cellIndex} className="px-3 py-2 border">
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <div className="space-y-2">
+        <Link href="/magasin" className="block text-blue-600 hover:underline">🗃️ Voir Magasin</Link>
+        <Link href="/atelier" className="block text-blue-600 hover:underline">🔧 Voir Atelier</Link>
+        <Link href="/reservation" className="block text-blue-600 hover:underline">📅 Voir Réservation</Link>
+        <Link href="/multi" className="block text-blue-600 hover:underline">📋 Voir Multi</Link>
+        <Link href="/add/magasin" className="block text-green-600 hover:underline">➕ Ajouter Magasin</Link>
+      </div>
     </main>
   )
 }
