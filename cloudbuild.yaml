@@ -1,0 +1,19 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcp_next_frontend', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/gcp_next_frontend']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - gcp-next-frontend
+      - --image=gcr.io/$PROJECT_ID/gcp_next_frontend
+      - --region=europe-west1
+      - --platform=managed
+      - --allow-unauthenticated
+      - --port=3000
+      - --update-env-vars=NEXT_PUBLIC_API_URL=https://api-linux-service-941468102689.europe-west1.run.app
